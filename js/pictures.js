@@ -1,3 +1,5 @@
+'use strict'
+
 var lengthPictures = 25;
 var description = [
   'Тестим новую камеру!',
@@ -84,7 +86,7 @@ var showBigPicture = function () {
 
   // Добавляем комментарии в этот попап
   for (var j = 0; j < picturesArray[1].comments.length; j++) {
-    var li  = document.createElement('li');
+    var li = document.createElement('li');
     var img = document.createElement('img');
     var p = document.createElement('p');
 
@@ -92,7 +94,7 @@ var showBigPicture = function () {
     li.classList.add('social__comment--text');
 
     img.classList.add('social__picture');
-    img.src = 'img/avatar-'+randomInteger(1, 6) + '.svg';
+    img.src = 'img/avatar-' + randomInteger(1, 6) + '.svg';
     img.alt = 'Аватар комментатора фотографии';
     img.width = 35;
     img.height = 35;
