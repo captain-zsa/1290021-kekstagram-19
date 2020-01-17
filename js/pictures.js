@@ -17,28 +17,28 @@ var comments = [
 ];
 
 // Функция для генерации рандома между min и max
-var randomInteger = function ( min, max ) {
-  var rand = min - 0.5 + Math.random() * ( max - min + 1 );
+var randomInteger = function (min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
   rand = Math.round(rand);
   return rand;
-}
+};
 
 // Функция для генерации массива картинок
-var generatePictures = function ( picCol ) {
+var generatePictures = function (picCol) {
   var pictures = [];
-  var colComments = randomInteger(1,10);
+  var colComments = randomInteger(1, 10);
   var commentaries = [];
 
-  for ( var i = 1; i <= picCol; i++ ) {
+  for (var i = 1; i <= picCol; i++) {
     pictures[i] = {
-      url: 'photos/'+i+'.jpg',
+      url: 'photos/' + i + '.jpg',
       likes: randomInteger(15, 200),
       comments: [],
-      description: description[randomInteger(0, description.length-1)]
+      description: description[randomInteger(0, description.length - 1)]
     };
 
-    for ( var j = 0; j < colComments; j++ ) {
-      commentaries[j] = comments[randomInteger(0, comments.length-1)]+' '+comments[randomInteger(0, comments.length-1)];
+    for (var j = 0; j < colComments; j++) {
+      commentaries[j] = comments[randomInteger(0, comments.length - 1)] + ' ' + comments[randomInteger(0, comments.length - 1)];
     }
 
     pictures[i].comments = commentaries;
@@ -48,14 +48,14 @@ var generatePictures = function ( picCol ) {
 };
 
 // Подготовка к манипуляциям со списком картиночек
-var picturesArray   = generatePictures(lengthPictures);
+var picturesArray = generatePictures(lengthPictures);
 var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-var pictureBox      = document.querySelector('.pictures');
-var items           = document.createDocumentFragment();
+var pictureBox = document.querySelector('.pictures');
+var items = document.createDocumentFragment();
 
 
 // Цикл для наполнения .pictures
-for ( var i = 1; i < picturesArray.length; i++ ) {
+for (var i = 1; i < picturesArray.length; i++) {
   var pictureElement = pictureTemplate.cloneNode(true);
 
   pictureElement.querySelector('.picture__img').src = picturesArray[i].url;
@@ -67,15 +67,13 @@ for ( var i = 1; i < picturesArray.length; i++ ) {
 
 pictureBox.appendChild(items);
 
-
-
 // попап .big-picture с одним изображением
 var bigPicture = document.querySelector('.big-picture');
 
 // Функция для работы с этим попапом
 var showBigPicture = function () {
   var socialCommentsList = bigPicture.querySelector('.social__comments');
-  var items              = document.createDocumentFragment();
+  var itemsComments = document.createDocumentFragment();
 
   // открываем попап с первой фоткой и добавляем ему всякое из П.4
   bigPicture.classList.remove('hidden');
@@ -85,16 +83,16 @@ var showBigPicture = function () {
   bigPicture.querySelector('.social__caption').textContent = picturesArray[1].description;
 
   // Добавляем комментарии в этот попап
-  for ( var j = 0; j < picturesArray[1].comments.length; j++ ) {
+  for (var j = 0; j < picturesArray[1].comments.length; j++) {
     var li  = document.createElement('li');
     var img = document.createElement('img');
-    var p   = document.createElement('p');
+    var p = document.createElement('p');
 
     li.classList.add('social__comment');
     li.classList.add('social__comment--text');
 
     img.classList.add('social__picture');
-    img.src = 'img/avatar-'+randomInteger(1,6)+'.svg';
+    img.src = 'img/avatar-'+randomInteger(1, 6) + '.svg';
     img.alt = 'Аватар комментатора фотографии';
     img.width = 35;
     img.height = 35;
@@ -105,10 +103,10 @@ var showBigPicture = function () {
     li.appendChild(img);
     li.appendChild(p);
 
-    items.appendChild(li);
+    itemsComments.appendChild(li);
   }
 
-  socialCommentsList.appendChild(items);
+  socialCommentsList.appendChild(itemsComments);
 
   // П.5 прячем счетчики и загрузки новых комментариев
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
