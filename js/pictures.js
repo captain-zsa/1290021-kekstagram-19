@@ -70,7 +70,7 @@ var renderPictures = function (data) {
   }
 
   pictureBox.appendChild(items);
-}
+};
 
 // Функция для работы с .big-picture
 var showBigPicture = function (data) {
