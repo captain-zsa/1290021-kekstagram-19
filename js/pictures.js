@@ -1,6 +1,7 @@
 'use strict';
 
 var lengthPictures = 25;
+var KEY_ESC = 27;
 var description = [
   'Тестим новую камеру!',
   'Затусили с друзьями на море',
@@ -17,6 +18,9 @@ var comments = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
+
+var bigPicture = document.querySelector('.big-picture');
+var pictureBox = document.querySelector('.pictures');
 
 // Функция для генерации рандома между min и max
 var randomInteger = function (min, max) {
@@ -56,7 +60,6 @@ var picturesArray = generatePictures(lengthPictures);
 // функция наполнения .pictures
 var renderPictures = function (data) {
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-  var pictureBox = document.querySelector('.pictures');
   var items = document.createDocumentFragment();
 
   for (var i = 1; i < data.length; i++) {
@@ -74,7 +77,6 @@ var renderPictures = function (data) {
 
 // Функция для работы с .big-picture
 var showBigPicture = function (data) {
-  var bigPicture = document.querySelector('.big-picture');
   var socialCommentsList = bigPicture.querySelector('.social__comments');
   var itemsComments = document.createDocumentFragment();
 
@@ -116,5 +118,29 @@ var showBigPicture = function (data) {
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 };
 
+var closeBigPicture = function() {
+  bigPicture.classList.add('hidden');
+};
+
 renderPictures(picturesArray);
-showBigPicture(picturesArray[1]);
+
+// при клике открываем картинки в попапе
+var picturesSmall = pictureBox.querySelectorAll('.picture');
+
+for(var counter = 0; counter < picturesSmall.length; counter++) {
+  picturesSmall[counter].addEventListener('click', function() {
+    showBigPicture(picturesArray[1]);
+  });
+}
+
+// Закрываем попап с картинкой
+var popupClose = document.querySelector('#picture-cancel');
+
+popupClose.addEventListener('click', closeBigPicture);
+
+document.addEventListener('keydown', function(e){
+  e.preventDefault();
+  if(e.keyCode === KEY_ESC) {
+    closeBigPicture();
+  }
+});
