@@ -49,43 +49,44 @@ var generatePictures = function (picCol) {
   return pictures;
 };
 
-// Подготовка к манипуляциям со списком картиночек
+// генерим массив с картинками
 var picturesArray = generatePictures(lengthPictures);
-var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-var pictureBox = document.querySelector('.pictures');
-var items = document.createDocumentFragment();
 
 
-// Цикл для наполнения .pictures
-for (var i = 1; i < picturesArray.length; i++) {
-  var pictureElement = pictureTemplate.cloneNode(true);
+// функция наполнения .pictures
+var renderPictures = function (data) {
+  var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+  var pictureBox = document.querySelector('.pictures');
+  var items = document.createDocumentFragment();
 
-  pictureElement.querySelector('.picture__img').src = picturesArray[i].url;
-  pictureElement.querySelector('.picture__likes').textContent = picturesArray[i].likes;
-  pictureElement.querySelector('.picture__comments').textContent = picturesArray[i].comments.length;
+  for (var i = 1; i < data.length; i++) {
+    var pictureElement = pictureTemplate.cloneNode(true);
 
-  items.appendChild(pictureElement);
+    pictureElement.querySelector('.picture__img').src = data[i].url;
+    pictureElement.querySelector('.picture__likes').textContent = data[i].likes;
+    pictureElement.querySelector('.picture__comments').textContent = data[i].comments.length;
+
+    items.appendChild(pictureElement);
+  }
+
+  pictureBox.appendChild(items);
 }
 
-pictureBox.appendChild(items);
-
-// попап .big-picture с одним изображением
-var bigPicture = document.querySelector('.big-picture');
-
-// Функция для работы с этим попапом
-var showBigPicture = function () {
+// Функция для работы с .big-picture
+var showBigPicture = function (data) {
+  var bigPicture = document.querySelector('.big-picture');
   var socialCommentsList = bigPicture.querySelector('.social__comments');
   var itemsComments = document.createDocumentFragment();
 
   // открываем попап с первой фоткой и добавляем ему всякое из П.4
   bigPicture.classList.remove('hidden');
-  bigPicture.querySelector('.big-picture__img img').src = picturesArray[1].url;
-  bigPicture.querySelector('.likes-count').textContent = picturesArray[1].likes;
-  bigPicture.querySelector('.comments-count').textContent = picturesArray[1].comments.length;
-  bigPicture.querySelector('.social__caption').textContent = picturesArray[1].description;
+  bigPicture.querySelector('.big-picture__img img').src = data.url;
+  bigPicture.querySelector('.likes-count').textContent = data.likes;
+  bigPicture.querySelector('.comments-count').textContent = data.comments.length;
+  bigPicture.querySelector('.social__caption').textContent = data.description;
 
   // Добавляем комментарии в этот попап
-  for (var j = 0; j < picturesArray[1].comments.length; j++) {
+  for (var j = 0; j < data.comments.length; j++) {
     var li = document.createElement('li');
     var img = document.createElement('img');
     var p = document.createElement('p');
@@ -100,7 +101,7 @@ var showBigPicture = function () {
     img.height = 35;
 
     p.classList.add('social__text');
-    p.textContent = picturesArray[1].comments[j];
+    p.textContent = data.comments[j];
 
     li.appendChild(img);
     li.appendChild(p);
@@ -115,4 +116,5 @@ var showBigPicture = function () {
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 };
 
-showBigPicture();
+renderPictures(picturesArray);
+showBigPicture(picturesArray[1]);
