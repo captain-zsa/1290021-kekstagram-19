@@ -118,7 +118,7 @@ var showBigPicture = function (data) {
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 };
 
-var closeBigPicture = function() {
+var closeBigPicture = function () {
   bigPicture.classList.add('hidden');
 };
 
@@ -127,8 +127,8 @@ renderPictures(picturesArray);
 // при клике открываем картинки в попапе
 var picturesSmall = pictureBox.querySelectorAll('.picture');
 
-for(var counter = 0; counter < picturesSmall.length; counter++) {
-  picturesSmall[counter].addEventListener('click', function() {
+for (var counter = 0; counter < picturesSmall.length; counter++) {
+  picturesSmall[counter].addEventListener('click', function () {
     showBigPicture(picturesArray[1]);
   });
 }
@@ -138,9 +138,9 @@ var popupClose = document.querySelector('#picture-cancel');
 
 popupClose.addEventListener('click', closeBigPicture);
 
-document.addEventListener('keydown', function(e){
+document.addEventListener('keydown', function (e) {
   e.preventDefault();
-  if(e.keyCode === KEY_ESC) {
+  if (e.keyCode === KEY_ESC) {
     closeBigPicture();
   }
 });
