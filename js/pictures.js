@@ -143,7 +143,9 @@ pictureBox.addEventListener('click', function (e) {
 
   e.preventDefault();
 
-  if (!picture) return;
+  if (!picture) {
+    return;
+  }
 
   showBigPicture(picturesArray[picture.dataset.number]);
 });
