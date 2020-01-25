@@ -40,7 +40,8 @@ var generatePictures = function (picCol) {
       url: 'photos/' + i + '.jpg',
       likes: randomInteger(15, 200),
       comments: [],
-      description: description[randomInteger(0, description.length - 1)]
+      description: description[randomInteger(0, description.length - 1)],
+      numberPicture: i
     };
 
     for (var j = 0; j < colComments; j++) {
@@ -65,7 +66,10 @@ var renderPictures = function (data) {
   for (var i = 1; i < data.length; i++) {
     var pictureElement = pictureTemplate.cloneNode(true);
 
+    pictureElement.dataset.number = data[i].numberPicture;
     pictureElement.querySelector('.picture__img').src = data[i].url;
+    pictureElement.querySelector('.picture__img').src = data[i].url;
+    pictureElement.querySelector('.picture__img').dataset.number = data[i].numberPicture;
     pictureElement.querySelector('.picture__likes').textContent = data[i].likes;
     pictureElement.querySelector('.picture__comments').textContent = data[i].comments.length;
 
@@ -74,6 +78,12 @@ var renderPictures = function (data) {
 
   pictureBox.appendChild(items);
 };
+
+// Закрытие .big-picture
+var closeBigPicture = function () {
+  bigPicture.classList.add('hidden');
+};
+
 
 // Функция для работы с .big-picture
 var showBigPicture = function (data) {
@@ -116,31 +126,30 @@ var showBigPicture = function (data) {
   // П.5 прячем счетчики и загрузки новых комментариев
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
-};
 
-var closeBigPicture = function () {
-  bigPicture.classList.add('hidden');
+  document.addEventListener('keydown', function (e) {
+    e.preventDefault();
+    if (e.keyCode === KEY_ESC) {
+      closeBigPicture();
+    }
+  });
 };
 
 renderPictures(picturesArray);
 
-// при клике открываем картинки в попапе
-var picturesSmall = pictureBox.querySelectorAll('.picture');
+// при клике на .picture открываем картинки в попапе
+pictureBox.addEventListener('click', function (e) {
+  var picture = e.target.closest('a');
 
-for (var counter = 0; counter < picturesSmall.length; counter++) {
-  picturesSmall[counter].addEventListener('click', function () {
-    showBigPicture(picturesArray[1]);
-  });
-}
+  e.preventDefault();
+
+  if (!picture) return;
+
+  showBigPicture(picturesArray[picture.dataset.number]);
+});
 
 // Закрываем попап с картинкой
 var popupClose = document.querySelector('#picture-cancel');
-
 popupClose.addEventListener('click', closeBigPicture);
 
-document.addEventListener('keydown', function (e) {
-  e.preventDefault();
-  if (e.keyCode === KEY_ESC) {
-    closeBigPicture();
-  }
-});
+// Резетим всю форму
