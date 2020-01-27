@@ -68,8 +68,6 @@ var renderPictures = function (data) {
 
     pictureElement.dataset.number = data[i].numberPicture;
     pictureElement.querySelector('.picture__img').src = data[i].url;
-    pictureElement.querySelector('.picture__img').src = data[i].url;
-    pictureElement.querySelector('.picture__img').dataset.number = data[i].numberPicture;
     pictureElement.querySelector('.picture__likes').textContent = data[i].likes;
     pictureElement.querySelector('.picture__comments').textContent = data[i].comments.length;
 
@@ -139,7 +137,7 @@ renderPictures(picturesArray);
 
 // при клике на .picture открываем картинки в попапе
 pictureBox.addEventListener('click', function (e) {
-  var picture = e.target.closest('a');
+  var picture = e.target.closest('.picture');
 
   e.preventDefault();
 
