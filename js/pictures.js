@@ -1,6 +1,7 @@
 'use strict';
 
 var lengthPictures = 25;
+var KEY_ESC = 27;
 var description = [
   'Тестим новую камеру!',
   'Затусили с друзьями на море',
@@ -17,6 +18,9 @@ var comments = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
+
+var bigPicture = document.querySelector('.big-picture');
+var pictureBox = document.querySelector('.pictures');
 
 // Функция для генерации рандома между min и max
 var randomInteger = function (min, max) {
@@ -36,7 +40,8 @@ var generatePictures = function (picCol) {
       url: 'photos/' + i + '.jpg',
       likes: randomInteger(15, 200),
       comments: [],
-      description: description[randomInteger(0, description.length - 1)]
+      description: description[randomInteger(0, description.length - 1)],
+      numberPicture: i
     };
 
     for (var j = 0; j < colComments; j++) {
@@ -56,12 +61,12 @@ var picturesArray = generatePictures(lengthPictures);
 // функция наполнения .pictures
 var renderPictures = function (data) {
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-  var pictureBox = document.querySelector('.pictures');
   var items = document.createDocumentFragment();
 
   for (var i = 1; i < data.length; i++) {
     var pictureElement = pictureTemplate.cloneNode(true);
 
+    pictureElement.dataset.number = data[i].numberPicture;
     pictureElement.querySelector('.picture__img').src = data[i].url;
     pictureElement.querySelector('.picture__likes').textContent = data[i].likes;
     pictureElement.querySelector('.picture__comments').textContent = data[i].comments.length;
@@ -72,9 +77,15 @@ var renderPictures = function (data) {
   pictureBox.appendChild(items);
 };
 
+// Закрытие .big-picture
+var closeBigPicture = function () {
+  bigPicture.classList.add('hidden');
+  document.removeEventListener('keydown', onEscPress);
+};
+
+
 // Функция для работы с .big-picture
 var showBigPicture = function (data) {
-  var bigPicture = document.querySelector('.big-picture');
   var socialCommentsList = bigPicture.querySelector('.social__comments');
   var itemsComments = document.createDocumentFragment();
 
@@ -114,7 +125,34 @@ var showBigPicture = function (data) {
   // П.5 прячем счетчики и загрузки новых комментариев
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
+
+  document.addEventListener('keydown', onEscPress);
+};
+
+var onEscPress = function (e) {
+  e.preventDefault();
+  if (e.keyCode === KEY_ESC) {
+    closeBigPicture();
+  }
 };
 
 renderPictures(picturesArray);
-showBigPicture(picturesArray[1]);
+
+// при клике на .picture открываем картинки в попапе
+pictureBox.addEventListener('click', function (e) {
+  var picture = e.target.closest('.picture');
+
+  e.preventDefault();
+
+  if (!picture) {
+    return;
+  }
+
+  showBigPicture(picturesArray[picture.dataset.number]);
+});
+
+// Закрываем попап с картинкой
+var popupClose = document.querySelector('#picture-cancel');
+popupClose.addEventListener('click', closeBigPicture);
+
+// Резетим всю форму
