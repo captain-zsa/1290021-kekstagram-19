@@ -80,6 +80,7 @@ var renderPictures = function (data) {
 // Закрытие .big-picture
 var closeBigPicture = function () {
   bigPicture.classList.add('hidden');
+  document.removeEventListener('keydown', onEscPress);
 };
 
 
@@ -125,12 +126,14 @@ var showBigPicture = function (data) {
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 
-  document.addEventListener('keydown', function (e) {
-    e.preventDefault();
-    if (e.keyCode === KEY_ESC) {
-      closeBigPicture();
-    }
-  });
+  document.addEventListener('keydown', onEscPress);
+};
+
+var onEscPress = function (e) {
+  e.preventDefault();
+  if (e.keyCode === KEY_ESC) {
+    closeBigPicture();
+  }
 };
 
 renderPictures(picturesArray);
