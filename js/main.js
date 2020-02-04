@@ -21,6 +21,7 @@ var comments = [
 
 var bigPicture = document.querySelector('.big-picture');
 var pictureBox = document.querySelector('.pictures');
+var bodyEl = document.querySelector('body');
 
 // Функция для генерации рандома между min и max
 var randomInteger = function (min, max) {
@@ -81,6 +82,8 @@ var renderPictures = function (data) {
 var closeBigPicture = function () {
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onEscPress);
+  // удаляем у body класс
+  bodyEl.classList.remove('modal-open');
 };
 
 
@@ -122,11 +125,14 @@ var showBigPicture = function (data) {
 
   socialCommentsList.appendChild(itemsComments);
 
-  // П.5 прячем счетчики и загрузки новых комментариев
+  // прячем счетчики и загрузки новых комментариев
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 
   document.addEventListener('keydown', onEscPress);
+
+  // добавляем для body класс чтоб не прокручивался
+  bodyEl.classList.add('modal-open');
 };
 
 var onEscPress = function (e) {
